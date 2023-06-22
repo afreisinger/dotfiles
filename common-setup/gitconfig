@@ -59,6 +59,8 @@
     enabled = true
 
 [credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
     # One week in-mem caching of HTTPS credentials
 	#helper = "!f() { /home/vscode/.vscode-server/bin/695af097c7bd098fbf017ce3ac85e09bbc5dda06/node /tmp/vscode-remote-containers-bddf3a8f-e289-4e99-b884-7396f9bc2062.js git-credential-helper $*; }; f"
 

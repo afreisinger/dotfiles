@@ -117,7 +117,7 @@ t_debug "aliases: finished setting up node aliases"
 t_debug webserver aliases
 # webdev
 # it's so long because I enabled UTF8 support: https://stackoverflow.com/a/24517632/200987
-alias webserver='python -m SimpleHTTPServer'
+alias webserver='python -m http.server 9000'
 alias servers='sudo lsof -iTCP -sTCP:LISTEN -P -n'
 
 # time

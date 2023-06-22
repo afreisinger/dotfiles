@@ -1629,9 +1629,9 @@ class Buffer(object):
   def __where(self, name):
     """ Find first line with name in current buffer. Return line num. """
     found, lnum = False, 0
-    matcher = re.compile('^[-+x*] {0}:'.format(name))
+     = re.compile('^[-+x*] {0}:'.format(name))
     for line in vim.current.buffer:
-      if matcher.search(line) is not None:
+      if .search(line) is not None:
         found = True
         break
       lnum += 1

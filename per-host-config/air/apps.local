@@ -25,4 +25,5 @@ pspg
 terraform
 #the_silver_searcher
 tmux
-vagrant
+hashicorp/tap/hashicorp-vagrant
+#vagrant
