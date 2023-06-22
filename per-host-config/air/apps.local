@@ -1,4 +1,5 @@
 ccat
+glow
 cmake
 cowsay
 direnv
@@ -7,17 +8,19 @@ fortune
 gh
 git-extras
 #gnupg
-homebrew/cask/macvim
+#homebrew/cask/macvim
 htop
+iterm2
 jq
+macdown
 #maven
-neovim
+#neovim
 node
 postgresql
 # python 3.5-3.9 needed for Google Cloud SDK. 3.11 is too new
 python@3.9
 pspg
-reattach-to-user-namespace
+#reattach-to-user-namespace
 #shivammathur/php/php@7.4
 terraform
 #the_silver_searcher

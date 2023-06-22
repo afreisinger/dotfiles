@@ -27,6 +27,6 @@ function timer_now(){
     echo $diff
 }
 
-debug "core utils setup finished"
+t_debug "core utils setup finished"
 
 # vi: ft=sh
