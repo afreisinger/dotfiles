@@ -1,7 +1,7 @@
 # short circuit the sourcing for non-interactive shells 
 # http://superuser.com/questions/183870/difference-between-bashrc-and-bash-profile
 # rsync also reads .bashrc and will bork if it results in any output
-#export DEBUG=1
+export DEBUG=1
 [[ $- != *i* ]] && return
 
 #export DEBUG=1

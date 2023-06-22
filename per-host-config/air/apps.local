@@ -10,7 +10,7 @@ git-extras
 #gnupg
 #homebrew/cask/macvim
 htop
-iterm2
+#iterm2
 jq
 macdown
 #maven
