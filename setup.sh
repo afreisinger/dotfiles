@@ -17,7 +17,7 @@ common-setup/setup.sh || fail "Failed common setup"
 h1 "Install config specific to this machine"
 per-host-config/setup.sh || fail "Failed machine specific setup"
 
-# Add the little `millis` util for cross-platform millisecond support
+# # Add the little `millis` util for cross-platform millisecond support
 h1 "Adding scripts and binary utilities"
 utils/setup.sh || fail "Failed utils setup"
 

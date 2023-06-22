@@ -65,11 +65,11 @@ alias htmldecode='python3 -c "import sys, html; print(html.unescape(sys.argv[1])
 alias htmlencode='python3 -c "import sys, html; print(html.escape(sys.argv[1]))"'
 alias html2text='npx html-to-text'
 
-t_debug "Pascal, Kebab, Camel, ... case conversions"
-alias pascal-case='~/bin/change-case --pascal'
-alias camel-case='~/bin/change-case --camel'
-alias snake-case='~/bin/change-case --snake'
-alias kebab-case='~/bin/change-case --kebab'
+# t_debug "Pascal, Kebab, Camel, ... case conversions"
+# alias pascal-case='~/bin/change-case --pascal'
+# alias camel-case='~/bin/change-case --camel'
+# alias snake-case='~/bin/change-case --snake'
+# alias kebab-case='~/bin/change-case --kebab'
 
 t_debug Use htop if available
 if which htop > /dev/null; then
@@ -117,7 +117,7 @@ t_debug "aliases: finished setting up node aliases"
 t_debug webserver aliases
 # webdev
 # it's so long because I enabled UTF8 support: https://stackoverflow.com/a/24517632/200987
-alias webserver='python -m SimpleHTTPServer'
+alias webserver='python -m http.server 9000'
 alias servers='sudo lsof -iTCP -sTCP:LISTEN -P -n'
 
 # time
