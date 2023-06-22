@@ -1,6 +1,10 @@
 # short circuit the sourcing for non-interactive shells 
 # http://superuser.com/questions/183870/difference-between-bashrc-and-bash-profile
 # rsync also reads .bashrc and will bork if it results in any output
+<<<<<<< HEAD
+=======
+#export DEBUG=1
+>>>>>>> 6efc6b2 (add files)
 [[ $- != *i* ]] && return
 
 # export DEBUG=1
