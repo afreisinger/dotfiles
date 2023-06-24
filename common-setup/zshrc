@@ -22,6 +22,8 @@ setopt share_history
 # This is like `set -o vi` in bash, ref https://www.techrepublic.com/blog/linux-and-open-source/using-vi-key-bindings-in-bash-and-zsh/
 
 # Re-use BASH aliases. Mostly compatible
+BASH_D="$HOME/.bash.d"
+BIN_DIR="$HOME/bin"
 source ~/.bash.d/aliases_functions
 
 
