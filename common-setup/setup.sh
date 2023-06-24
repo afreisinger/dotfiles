@@ -158,6 +158,6 @@ done
 # Download to latest to home dir
 h2 "Fetching Jump Around"
 curl -s https://raw.githubusercontent.com/rupa/z/master/z.sh -o ~/bin/z.sh
-
 h2 "Finished common setup"
+
 popd > /dev/null
