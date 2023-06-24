@@ -72,12 +72,13 @@ carefully_replace_gitconfig(){
 ln -sf "$SCRIPT_DIR"/profile "$HOME"/.profile
 ln -sf "$SCRIPT_DIR"/bashrc "$HOME"/.bashrc
 ln -sf "$SCRIPT_DIR"/gitignore_global "$HOME"/.gitignore_global
+ln -sf "$SCRIPT_DIR"/files "$HOME"/.files
 #ln -sf "$SCRIPT_DIR"/pystartup "$HOME"/.pystartup
 ln -sf "$SCRIPT_DIR"/tmux.conf "$HOME"/.tmux.conf
 carefully_replace_gitconfig
 
 # Zsh
-ln -sf "$SCRIPT_DIR"/zsh/zshrc "$HOME"/.zshrc
+ln -sf "$SCRIPT_DIR"/zshrc "$HOME"/.zshrc
 
 # create needed dirs
 [[ ! -e "$HOME/.tmux" ]] && mkdir "$HOME/.tmux";

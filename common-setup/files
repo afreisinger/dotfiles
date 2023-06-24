@@ -28,6 +28,7 @@
 .viminfo
 .vimrc.local
 .z
+.zshrc
 .zcompdump-macbook-5.9
 .zcompdump-macbook-5.9.zwc
 .zplug

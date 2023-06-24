@@ -2,8 +2,8 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo $SCRIPT_DIR
 # Ruta del archivo de texto que contiene la lista de archivos y directorios a eliminar
-archivo_lista=~/"files"
-cd ~/
+archivo_lista=~/".files"
+cd $HOME
 # Verificar si el archivo de lista existe
 if [ -f "$archivo_lista" ]; then
     # Leer línea por línea del archivo de lista

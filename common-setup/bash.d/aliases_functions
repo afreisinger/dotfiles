@@ -1,7 +1,7 @@
 # vim: syntax=sh
 
-BASH_D="$HOME/.bash.d"
-BIN_DIR="$HOME/bin"
+#BASH_D="$HOME/.bash.d"
+#BIN_DIR="$HOME/bin"
 
 # since this is sourced from shared.lib in the dotfiles repo, we need 
 # source other files
