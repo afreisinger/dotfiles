@@ -1472,6 +1472,14 @@ typeset -g POWERLEVEL9K_LOG_ERRORS_FILE=~/.p10k.zsh-errors.log
   # Custom icon.
   # typeset -g POWERLEVEL9K_PUBLIC_IP_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
+
+  ###############################[ ping: ping to google.com ]###############################
+  # Ping IP color.
+  typeset -g POWERLEVEL9K_PING_FOREGROUND=21
+  # Custom icon.
+  # typeset -g POWERLEVEL9K_PUBLIC_IP_VISUAL_IDENTIFIER_EXPANSION='⭐'
+
+
   ########################[ vpn_ip: virtual private network indicator ]#########################
   # VPN IP color.
   typeset -g POWERLEVEL9K_VPN_IP_FOREGROUND=81
