@@ -24,6 +24,7 @@ setopt share_history
 # Re-use BASH aliases. Mostly compatible
 BASH_D="$HOME/.bash.d"
 BIN_DIR="$HOME/bin"
+export CLICOLOR=1
 source ~/.bash.d/aliases_functions
 
 
@@ -52,7 +53,8 @@ if ! zplug check --verbose; then
         echo; zplug install
     fi
 fi
-zplug load --verbose
+#zplug load --verbose
+zplug load
 
 # # Load completion library for those sweet [tab] squares
 # zplug "lib/completion", from:oh-my-zsh
