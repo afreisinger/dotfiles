@@ -82,13 +82,13 @@ carefully_replace_gitconfig
 ln -sf "$SCRIPT_DIR"/zshrc "$HOME"/.zshrc
 
 # create needed dirs
-[[ ! -e "$HOME/.tmux" ]] && mkdir "$HOME/.tmux";
-[[ ! -e "$HOME/.tmux/plugins" ]] && mkdir "$HOME/.tmux/plugins";
-[[ ! -e "$HOME/.tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm "$HOME"/.tmux/plugins/tpm 
+[[ ! -e "$HOME/.config/tmux" ]] && mkdir "$HOME/.config/tmux";
+[[ ! -e "$HOME/.config/tmux/plugins" ]] && mkdir "$HOME/.config/tmux/plugins";
+[[ ! -e "$HOME/.config/tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm "$HOME"/.config/tmux/plugins/tpm 
 
 # copy tmux project settings
-for file in "$SCRIPT_DIR"/tmux/*; do
-  ln -sf "$file" "${HOME}/.tmux/"
+for file in "$SCRIPT_DIR"/config/tmux/*; do
+  ln -sf "$file" "${HOME}/.config/tmux/"
 done
 
 for file in "$SCRIPT_DIR"/bash.d/*; do
@@ -124,7 +124,7 @@ done
 # touch "$HOME"/.vimrc.local
 
 # Install NeoVim config (we don't have to worry about XDG_CONFIG_HOME stuff
-# [[ ! -e "$HOME"/.config ]] && mkdir "$HOME/.config"
+ #[[ ! -e "$HOME"/.config ]] && mkdir "$HOME/.config"
 # rm -rf ~/.config/nvim 
 # ln -sf ~/.vim ~/.config/nvim
 # ln -sf ~/.vimrc ~/.config/nvim/init.vim
