@@ -23,6 +23,7 @@ select-pane -L; # select the left pane; nvim
 
 # window 2 - monitor cpu, etc
 new-window 
+rename-window 'htop'
 send-keys 'htop' C-m
 
 # go to first window

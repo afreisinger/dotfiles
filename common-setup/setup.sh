@@ -84,11 +84,12 @@ ln -sf "$SCRIPT_DIR"/zshrc "$HOME"/.zshrc
 # create needed dirs
 [[ ! -e "$HOME/.config/tmux" ]] && mkdir "$HOME/.config/tmux";
 [[ ! -e "$HOME/.config/tmux/plugins" ]] && mkdir "$HOME/.config/tmux/plugins";
+[[ ! -e "$HOME/.tmux" ]] && mkdir "$HOME/.tmux";
 [[ ! -e "$HOME/.config/tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm "$HOME"/.config/tmux/plugins/tpm 
 
 # copy tmux project settings
-for file in "$SCRIPT_DIR"/config/tmux/*; do
-  ln -sf "$file" "${HOME}/.config/tmux/"
+for file in "$SCRIPT_DIR"/tmux/*; do
+  ln -sf "$file" "${HOME}/.tmux"
 done
 
 for file in "$SCRIPT_DIR"/bash.d/*; do

@@ -9,6 +9,7 @@ fi
 export HISTFILE=~/.zsh_history
 export HISTSIZE=100000 # can't be unset, like in bash
 export SAVEHIST=100000 # needed in order to save it somewhere
+export CLICOLOR=1 # env variable
 
 # Appends every command to the history file once it is executed
 setopt inc_append_history
@@ -24,7 +25,7 @@ setopt share_history
 # Re-use BASH aliases. Mostly compatible
 BASH_D="$HOME/.bash.d"
 BIN_DIR="$HOME/bin"
-export CLICOLOR=1
+
 source ~/.bash.d/aliases_functions
 
 
@@ -43,7 +44,7 @@ zplug "afreisinger/docker-alias", use:zshrc
 zplug "rupa/z", use:z.sh
 # Themes !
 # zplug "themes/robbyrussell", from:oh-my-zsh, as:theme
-zplug "romkatv/powerlevel10k", as:theme, depth:1
+  zplug "romkatv/powerlevel10k", as:theme, depth:1
 # zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 # zplug "dracula/zsh", as:theme 
 
@@ -55,23 +56,6 @@ if ! zplug check --verbose; then
 fi
 #zplug load --verbose
 zplug load
-
-# # Load completion library for those sweet [tab] squares
-# zplug "lib/completion", from:oh-my-zsh
-
-# # Never got the oh-my-zsh version to work without manual configuration, 
-# zplug "rupa/z", use:z.sh
-
-# # Syntax highlighting for commands, load last
-# zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:3
-
-# # Async for zsh, used by pure
-# zplug "mafredri/zsh-async", from:github, defer:0
-# # Theme!
-
-# zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
-# #zplug "romkatv/powerlevel10k", as:theme, depth:1
-
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
