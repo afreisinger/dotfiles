@@ -14,9 +14,9 @@ htop
 #iterm2
 jq
 macdown
-mc
+midnight-commander
 #maven
-#neovim
+neovim
 node
 postgresql
 # python 3.5-3.9 needed for Google Cloud SDK. 3.11 is too new

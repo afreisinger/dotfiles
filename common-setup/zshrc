@@ -28,6 +28,9 @@ BIN_DIR="$HOME/bin"
 
 source ~/.bash.d/aliases_functions
 
+# source $HOME/.bash.d/core_utils # clearly not portable across shells, but should be easy to port
+# timer_start_if_unset
+# t_debug "bashrc PATH=$PATH"
 
 if [[ ! -d ~/.zplug ]];then
   git clone https://github.com/zplug/zplug ~/.zplug
