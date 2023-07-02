@@ -42,8 +42,8 @@ zplug "afreisinger/docker-alias", use:zshrc
 zplug "rupa/z", use:z.sh
 # Themes !
 # zplug "themes/robbyrussell", from:oh-my-zsh, as:theme
-  zplug "romkatv/powerlevel10k", as:theme, depth:1
-# zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+# zplug "romkatv/powerlevel10k", as:theme, depth:1
+  zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 # zplug "dracula/zsh", as:theme 
 
 if ! zplug check --verbose; then
