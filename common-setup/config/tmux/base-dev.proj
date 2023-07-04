@@ -13,20 +13,35 @@ rename-window 'cli';
 split-window # not sure why this is needed to get a shell. Otherwise there is no window0!
 
 # window 1 - main window in the left pane and 3 minor windows in the right pane
-neww
+new-window
 rename-window 'tools'
 send-keys 'nvim' C-m  # editor
-split-window -h -p 40 # build window (webpack, etc)
-split-window -v -p 80             # cli
-split-window -v -p 50             # test runner?
-select-pane -L; # select the left pane; nvim
+#split-window -h -p 40 # build window (webpack, etc)
+#split-window -v -p 80             # cli
+#split-window -v -p 50             # test runner?
+#select-pane -L; # select the left pane; nvim
 
 # window 2 - monitor cpu, etc
 new-window 
 rename-window 'htop'
 send-keys 'htop' C-m
 
+# window 5 - monitor cpu, etc
+new-window 
+rename-window 'gtop'
+send-keys 'gotop' C-m
+
+# window 3 - main window in the left pane and 3 minor windows in the right pane
+new-window 
+rename-window 'cliiiii'
+split-window -h -p 40 # build window (webpack, etc)
+split-window -v -p 50             # cli
+#split-window -v -p 50             # test runner?
+#select-pane -L; # select the left pane; nvim
+
+
 # go to first window
+select-window -p
 select-window -p
 select-window -p
 
