@@ -93,6 +93,8 @@ t_debug small utils and aliases
 alias v='ls -la'
 alias vi='nvim'
 alias clean-temp='find -E ~ -type f -and -regex ".*~$|.*-ck.js|.*.tmp" -exec rm {} \;'
+alias sz='source ~/.zshrc'
+alias sb='source ~/.bashrc'
 
 # Pretty print json
 alias prettify_json='python -mjson.tool'
@@ -229,14 +231,14 @@ alias list-functions='declare | egrep '\''^[[:alpha:]][[:alnum:]_]* ()'\''; echo
 
 tmux-restore () {
     if [[ -n $1 ]]; then
-        local setup_file="$HOME/.config/tmux/$1.proj" 
-        local dir_file="$HOME/.config/tmux/$1.dir" 
+        local setup_file="$HOME/.tmux/$1.proj" 
+        local dir_file="$HOME/.tmux/$1.dir" 
         if [[ -e $setup_file ]]; then
             [[ -e $dir_file ]] && cd $(bash -c "echo $(cat $dir_file)") # set CWD
             command tmux new-session -s "$1" "tmux source-file $setup_file"
         else
             printf "\nNo such file \"$setup_file\".\nListing existing files:\n\n"
-            ls -1 ~/.config/tmux/*.proj
+            ls -1 ~/.tmux/*.proj
             return 1
         fi
     else
