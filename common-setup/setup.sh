@@ -3,6 +3,8 @@
 BASH_DIR="${HOME}/.bash.d"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+echo $SCRIPT_DIR
+
 set -e #exit on error
 [[ ! -z $DEBUG ]] && set -x
 
@@ -83,14 +85,52 @@ ln -sf "$SCRIPT_DIR"/zshrc "$HOME"/.zshrc
 
 # create needed dirs
 [[ ! -e "$HOME/.config/tmux" ]] && mkdir "$HOME/.config/tmux";
-[[ ! -e "$HOME/.config/tmux/plugins" ]] && mkdir "$HOME/.config/tmux/plugins";
-[[ ! -e "$HOME/.tmux" ]] && mkdir "$HOME/.tmux";
+#[[ ! -e "$HOME/.config/tmux/plugins" ]] && mkdir "$HOME/.config/tmux/plugins";
+#[[ ! -e "$HOME/.tmux" ]] && mkdir "$HOME/.tmux";
 [[ ! -e "$HOME/.config/tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm "$HOME"/.config/tmux/plugins/tpm 
 
 # copy tmux project settings
-for file in "$SCRIPT_DIR"/tmux/*; do
-  ln -sf "$file" "${HOME}/.tmux"
+# for file in "$SCRIPT_DIR"/tmux/*; do
+#   ln -sf "$file" "${HOME}/.tmux"
+# done
+
+
+
+source_dir="$SCRIPT_DIR/config"
+target_dir="$HOME/.config"
+
+find "$source_dir" -type d -print0 | while IFS= read -r -d '' dir; do
+    new_dir="${dir/$source_dir/$target_dir}"
+    mkdir -p "$new_dir"
+    #echo "Analizando $dir"
+    echo "Directorio creado: $new_dir"
+    
+    find "$dir" -type f ! -name ".DS_Store" -print0 | while IFS= read -r -d '' file; do
+        rel_path="${file/$source_dir\//}"  # Ruta relativa del archivo
+        new_file="$target_dir/$rel_path"
+        new_file_dir=$(dirname "$new_file")
+        mkdir -p "$new_file_dir"
+        ln -sf "$file" "$new_file"
+        echo "Enlace simbólico creado: $new_file"
+    
+     done
 done
+
+
+
+#find "$source_dir" -type f ! -name ".DS_Store" -exec sh -c 'ln -s "$0" "${HOME}/.config/$0"; echo "Enlace creado para $0"' {} \;
+
+# find "$SCRIPT_DIR"/config/nvim -type d -exec mkdir -p "${HOME}/.config/nvim/{}" \;
+# find "$SCRIPT_DIR"/config/nvim -type f -exec sh -c 'ln -s "$0" "${HOME}/.config/nvim/$0"; echo "Enlace creado para $0"' {} \;
+
+
+#[[ ! -e "$HOME/.config/tmux" ]] && mkdir "$HOME/.config/tmux";
+#[[ ! -e "$HOME/.config/tmux/plugins" ]] && mkdir "$HOME/.config/tmux/plugins";
+#[[ ! -e "$HOME/.tmux" ]] && mkdir "$HOME/.tmux";
+[[ ! -e "$HOME/.config/tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm "$HOME"/.config/tmux/plugins/tpm 
+
+
+
 
 for file in "$SCRIPT_DIR"/bash.d/*; do
   ln -sf "$file" "${BASH_DIR}"/
