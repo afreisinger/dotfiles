@@ -61,11 +61,13 @@ if ! zplug check --verbose; then
         echo; zplug install
     fi
 fi
-zplug load --verbose
-#zplug load
+#zplug load --verbose
+zplug load
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+[[ ! -f ~/.config/powerlevel/p10k.zsh ]] || source ~/.config/powerlevel/p10k.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/common-setup/p10k.zsh.
-[[ ! -f ~/.dotfiles/common-setup/p10k.zsh ]] || source ~/.dotfiles/common-setup/p10k.zsh
+#[[ ! -f ~/.dotfiles/common-setup/p10k.zsh ]] || source ~/.dotfiles/common-setup/p10k.zsh
