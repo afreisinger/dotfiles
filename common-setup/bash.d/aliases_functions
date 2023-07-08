@@ -279,7 +279,6 @@ function delete-untagged-aws-images(){
 
 # Build PATH
 function update-path(){
-    
     if [[ -n $1 ]]; then
         local _paths=("$@")
         for _path in "${_paths[@]}"; do
@@ -301,6 +300,37 @@ function update-path(){
             return 1
         fi
 }
+
+#BASE_DIR=$ZPLUG_HOME
+to_skip=("oh-my-zsh" "spaceship")
+zplug-plugin-help () {
+### Looks for all plugins with README.md files and shows the content of the selected one
+## Provides functions to show plugin on Markdown format
+## Requires: fzf and/or gum to provide fuzzy search 
+local findargs=()
+
+  for i in "${to_skip[@]}"; do
+    findargs+=('-not' '-path' "*${i}*")
+    #echo test "${findargs[@]}"
+  done
+  local find_cmd=$(find "${ZPLUG_HOME}/repos" -mindepth 3 -name 'README.md' -and "${findargs[@]}")
+   if [ ! -z "${DEBUG}" ]; then
+     echo "Find command -> ${find_cmd}"
+   fi
+ local help_dir=$(find "${ZPLUG_HOME}/repos" -mindepth 3 -name 'README.md' -and "${findargs[@]}" | xargs -I {} dirname {} | sort | uniq | fzf)
+  echo "HElp command -> ${help_dir}" 
+   cat "${help_dir}/README.md" | gum format
+}
+
+
+alias zh=zplug-plugin-help
+#DEBUG=1
+if [ ! -z "${DEBUG}" ]
+ then
+   zplug-plugin-help
+ fi
+
+
 
 
 t_debug "global aliases and functions finished"

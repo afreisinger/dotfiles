@@ -4,11 +4,13 @@ cmake
 cowsay
 direnv
 fortune
+fzf
 #fswatch
 gh
 git-extras
 gotop
-#gnupg
+gum
+gnupg
 #homebrew/cask/macvim
 htop
 koekeishiya/formulae/yabai
