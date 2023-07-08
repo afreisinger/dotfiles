@@ -51,9 +51,10 @@ zplug "michaelaquilina/zsh-you-should-use"  # Recommends aliases when typed
 
 # Themes !
 # zplug "themes/robbyrussell", from:oh-my-zsh, as:theme
-  zplug "romkatv/powerlevel10k", as:theme, depth:1
+#  zplug "romkatv/powerlevel10k", as:theme, depth:1
 # zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 # zplug "dracula/zsh", as:theme 
+ zplug "spaceship-prompt/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "

@@ -95,6 +95,7 @@ alias vi='nvim'
 alias clean-temp='find -E ~ -type f -and -regex ".*~$|.*-ck.js|.*.tmp" -exec rm {} \;'
 alias sz='source ~/.zshrc'
 alias sb='source ~/.bashrc'
+alias cw='cowsay -f "$(ls /opt/homebrew/Cellar/cowsay/*/share/cows/ | sort -R | head -1)" "$(fortune -s)" | lolcat'
 
 # Pretty print json
 alias prettify_json='python -mjson.tool'
