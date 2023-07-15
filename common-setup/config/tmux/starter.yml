@@ -1,0 +1,5 @@
+session_name: starter 
+windows:
+  - window_name: dev 
+    panes:
+      - blank

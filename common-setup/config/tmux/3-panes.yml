@@ -1,0 +1,11 @@
+session_name: mysession
+windows:
+  - window_name: main
+    layout: even-horizontal
+    panes:
+      - shell_command:
+          - echo "Panel izquierdo"
+      - shell_command:
+          - echo "Panel derecho (superior)"
+      - shell_command:
+          - echo "Panel derecho (inferior)"

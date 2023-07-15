@@ -74,10 +74,12 @@ carefully_replace_gitconfig(){
 ln -sf "$SCRIPT_DIR"/profile "$HOME"/.profile
 ln -sf "$SCRIPT_DIR"/bashrc "$HOME"/.bashrc
 ln -sf "$SCRIPT_DIR"/gitignore_global "$HOME"/.gitignore_global
+ln -sf "$SCRIPT_DIR"/dir_colors "$HOME"/.dir_colors
+
 ln -sf "$SCRIPT_DIR"/files "$HOME"/.files
 #ln -sf "$SCRIPT_DIR"/pystartup "$HOME"/.pystartup
-ln -sf "$SCRIPT_DIR"/tmux.conf "$HOME"/.tmux.conf
-ln -sf "$SCRIPT_DIR"/p10k.zsh "$HOME"/.p10k.zsh
+#ln -sf "$SCRIPT_DIR"/tmux.conf "$HOME"/.tmux.conf
+#ln -sf "$SCRIPT_DIR"/p10k.zsh "$HOME"/.p10k.zsh
 carefully_replace_gitconfig
 
 # Zsh

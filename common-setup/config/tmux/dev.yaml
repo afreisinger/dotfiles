@@ -1,0 +1,19 @@
+session_name: dev
+windows:
+- focus: 'true'
+  layout: d294,158x46,0,0{79x46,0,0,1,78x46,80,0[78x23,80,0,2,78x22,80,24,5]}
+  options: {}
+  panes:
+  - focus: 'true'
+    shell_command:
+    - cd /Users/afreisinger/dev
+    - clear
+  - shell_command:
+    - cd cd /Users/afreisinger/dev
+    - clear
+    - cmatrix
+  - shell_command:
+    - cd cd /Users/afreisinger/dev
+    - clear
+    - cw
+  window_name: dev
