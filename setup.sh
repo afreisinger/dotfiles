@@ -5,8 +5,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 pushd "$SCRIPT_DIR" > /dev/null
 
 # Init submodules
-git submodule init
-git submodule update
+#git submodule init
+#git submodule update
 
 ROOT="$SCRIPT_DIR"
 source "$ROOT/shared.lib"
