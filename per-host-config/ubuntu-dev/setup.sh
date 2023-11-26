@@ -104,68 +104,68 @@ sudo apt-get purge avahi-daemon    # ZeroConf for local networks, printers, etc.
 
 # Add current user to rvm group
 # https://github.com/rvm/ubuntu_rvm
-sudo usermod -a -G rvm $USER
+#sudo usermod -a -G rvm $USER
 
 
 source ../_shared/install-utils
 install_python_packages
-install_ruby_packages
-install_node_packages
+#install_ruby_packages
+#install_node_packages
 
 # This cannot be a shared app, as the install fails on macOS due to some node-gyp thingie
-npm i -g @fatso83/luxafor-cli
+#npm i -g @fatso83/luxafor-cli
 
 # Install Yarn - used for instance by coc.vim
 if ! which yarn >> /dev/null; then
     curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 fi
 
-h2 "fix Alsa for Nforce"
-ln -sf $SCRIPT_DIR/asoundrc ~/.asoundrc
+#h2 "fix Alsa for Nforce"
+#ln -sf $SCRIPT_DIR/asoundrc ~/.asoundrc
 
 h2 "Autoremove unused"
 sudo apt-get autoremove --yes
 
 # install GitHub LFS support
-if ! which git-lfs > /dev/null; then
-    h2 "Installing Git LFS client..."
-    VERSION="2.4.2"
-    NAME="git-lfs"
-    OS="linux-amd64"
-    BASENAME="${NAME}-${OS}-$VERSION"
-    wget --quiet "https://github.com/git-lfs/git-lfs/releases/download/v${VERSION}/${BASENAME}.tar.gz"
-    tar xvzf "$BASENAME.tar.gz"
-    cd "${NAME}-${VERSION}"
-    sudo ./install.sh
-    cd ..
-    rimraf "${BASENAME}"*
-fi
+# if ! which git-lfs > /dev/null; then
+#     h2 "Installing Git LFS client..."
+#     VERSION="2.4.2"
+#     NAME="git-lfs"
+#     OS="linux-amd64"
+#     BASENAME="${NAME}-${OS}-$VERSION"
+#     wget --quiet "https://github.com/git-lfs/git-lfs/releases/download/v${VERSION}/${BASENAME}.tar.gz"
+#     tar xvzf "$BASENAME.tar.gz"
+#     cd "${NAME}-${VERSION}"
+#     sudo ./install.sh
+#     cd ..
+#     rimraf "${BASENAME}"*
+# fi
 
-export SDKMAN_DIR="/home/carlerik/.sdkman"
-[[ -s "/home/carlerik/.sdkman/bin/sdkman-init.sh" ]] && source "/home/carlerik/.sdkman/bin/sdkman-init.sh"
-if ! type sdk > /dev/null 2> /dev/null; then # if the `sdk` function doesn't exist
-    h2 "Installing SDKMAN"
-    curl -s "https://get.sdkman.io" | bash # installs SDKMAN
+# export SDKMAN_DIR="/home/carlerik/.sdkman"
+# [[ -s "/home/carlerik/.sdkman/bin/sdkman-init.sh" ]] && source "/home/carlerik/.sdkman/bin/sdkman-init.sh"
+# if ! type sdk > /dev/null 2> /dev/null; then # if the `sdk` function doesn't exist
+#     h2 "Installing SDKMAN"
+#     curl -s "https://get.sdkman.io" | bash # installs SDKMAN
 
-    # make sdk available in the current shell
-    source "$HOME/.sdkman/bin/sdkman-init.sh"
-fi
+#     # make sdk available in the current shell
+#     source "$HOME/.sdkman/bin/sdkman-init.sh"
+# fi
 
-JAVA_VERSION=16
-if ! sh -c "java --version  | grep 'openjdk $JAVA_VERSION' > /dev/null"; then
-    h2 "Installing Java"
-    sdk install java $JAVA_VERSION-open
-    sdk default java $JAVA_VERSION-open
-fi
-MAVEN_VERSION=3.6.3
-if ! sh -c "mvn --version  | grep '$MAVEN_VERSION' > /dev/null"; then
-    h2 "Installing Maven"
-    sdk install maven $MAVEN_VERSION
-    sdk default maven $MAVEN_VERSION
-fi
+# JAVA_VERSION=16
+# if ! sh -c "java --version  | grep 'openjdk $JAVA_VERSION' > /dev/null"; then
+#     h2 "Installing Java"
+#     sdk install java $JAVA_VERSION-open
+#     sdk default java $JAVA_VERSION-open
+# fi
+# MAVEN_VERSION=3.6.3
+# if ! sh -c "mvn --version  | grep '$MAVEN_VERSION' > /dev/null"; then
+#     h2 "Installing Maven"
+#     sdk install maven $MAVEN_VERSION
+#     sdk default maven $MAVEN_VERSION
+# fi
 
-h2 "Install QR copier"
-go install github.com/claudiodangelis/qrcp@latest
+# h2 "Install QR copier"
+# go install github.com/claudiodangelis/qrcp@latest
 
 # These bits do not make sense on WSL2 (Windows Subsyste for Linux)
 if ! is_wsl; then
@@ -262,7 +262,7 @@ if ! command_exists pspg; then
 fi
 
 # Installing zplug
-#curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 
 if ! command_exists ccat; then
      curl -o - -L https://github.com/jingweno/ccat/releases/download/v1.1.0/linux-amd64-1.1.0.tar.gz | tar xvz linux-amd64-1.1.0/ccat

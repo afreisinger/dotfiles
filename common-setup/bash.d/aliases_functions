@@ -95,7 +95,7 @@ alias vi='nvim'
 alias clean-temp='find -E ~ -type f -and -regex ".*~$|.*-ck.js|.*.tmp" -exec rm {} \;'
 alias sz='source ~/.zshrc'
 alias sb='source ~/.bashrc'
-alias cw='cowsay -f "$(ls /opt/homebrew/Cellar/cowsay/*/share/cows/ | sort -R | head -1)" "$(fortune -s)" | lolcat'
+#alias cw='cowsay -f "$(ls /opt/homebrew/Cellar/cowsay/*/share/cows/ | sort -R | head -1)" "$(fortune -s)" | lolcat'
 
 # Pretty print json
 alias prettify_json='python -mjson.tool'
@@ -135,8 +135,8 @@ alias my-ip='curl -s http://ipinfo.io/ip'
 alias my-ip-json='curl -s http://ifconfig.co/json'
 
 # SOCKS proxy
-alias socks_proxy='ssh -v -D 22222 carl-erik@timbuktu.kopseng.no -N'
-alias socks_proxy_all='ssh -v -D :22222 carl-erik@timbuktu.kopseng.no -N'
+#alias socks_proxy='ssh -v -D 22222 carl-erik@timbuktu.kopseng.no -N'
+#alias socks_proxy_all='ssh -v -D :22222 carl-erik@timbuktu.kopseng.no -N'
 
 function ltrim ()
 {
@@ -258,14 +258,14 @@ alias hub='printf "DEPRECATED: use the Github CLI \`gh\` instead!\n"'
 # SSH recipes for myself
 
 # Auto-open Bittorrent Sync
-alias timbuktu_btsync="(sleep 2 && open http://localhost:8888)& ssh -L8888:127.0.0.1:8888 carl-erik@timbuktu.kopseng.no -N"
+#alias timbuktu_btsync="(sleep 2 && open http://localhost:8888)& ssh -L8888:127.0.0.1:8888 carl-erik@timbuktu.kopseng.no -N"
 
 # Reverse SSH
 # Connect to timbuktu.kopseng.no to allow timbuktu.kopseng.no:10001 to go directly against my own machine
 # client 1: timbuktu_reverse_tunnel
 # client 2: ssh -l my-client1-user -p 10001 timbuktu.kopseng.no
 # Effect: client2 => timbuktu => client1
-alias timbuktu_reverse_tunnel='ssh -v -R 10001:localhost:22 timbuktu.kopseng.no -N -l carl-erik'
+#alias timbuktu_reverse_tunnel='ssh -v -R 10001:localhost:22 timbuktu.kopseng.no -N -l carl-erik'
 
 # https://stackoverflow.com/a/40949364/200987
 function delete-untagged-aws-images(){
@@ -302,7 +302,7 @@ function update-path(){
         fi
 }
 
-#BASE_DIR=$ZPLUG_HOME
+BASE_DIR=$ZPLUG_HOME
 to_skip=("oh-my-zsh" "spaceship")
 zplug-plugin-help () {
 ### Looks for all plugins with README.md files and shows the content of the selected one

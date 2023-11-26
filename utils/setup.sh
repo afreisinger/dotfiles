@@ -59,9 +59,6 @@ h3 'Python dependencies'
 (python3 -m pip install --user smsutil && python3 -m pip install --user requests ) | grep -v 'Requirement already satisfied'
 
 
-#h3 'Updating npm'
-#'$SCRIPT_DIR/scripts/utils/update-npm.sh'
-#update-npm.sh
 
 h3 'Node dependencies'
 npm install

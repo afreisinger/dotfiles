@@ -149,4 +149,9 @@ t_debug Finished bash setup
 
 # Read environment variables, such as sauce labs keys
 read_config_if_exists "$HOME/.secret"
-chmod 600 "$HOME/.secret"
+#chmod 600 "$HOME/.secret"
+
+if [ -d ~/bin ] ; then
+     PATH=~/bin:"${PATH}"
+fi
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

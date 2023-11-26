@@ -5,4 +5,4 @@ ubuntu-diffia
 common-setup/vim/dotvim/autoload/plug.vim.old
 common-setup/docker-alias/
 mackup/
-
+.secrets
