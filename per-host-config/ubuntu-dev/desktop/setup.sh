@@ -10,10 +10,8 @@ source "$ROOT/shared.lib"
 set -e 
 
 # hacking around a bug
-# h2 "Customizing systray icons for Electron apps due to the Ubuntu XDG_... bug"
-# for f in *.desktop; do
-#     sudo cp $f /usr/share/applications/
-# done
+# 
+
 
 
 #h2 "Removing (almost) all Gnome key bindings ..." # crashes with IntelliJ products
