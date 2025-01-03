@@ -27,7 +27,7 @@ fi
 
 if ! command -v ccat &>/dev/null; then
 	info "Ccat is not installed. Proceeding with installation..."
-	"../$SCRIPT_DIR/utils/utils/scripts/install_ccat.sh" &>/dev/null
+	"../$SCRIPT_DIR/utils/scripts/install_ccat.sh" &>/dev/null
 else 
 	info "Ccat is already installed"
 fi
