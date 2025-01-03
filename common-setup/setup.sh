@@ -27,14 +27,14 @@ fi
 
 if ! command -v ccat &>/dev/null; then
 	info "Ccat is not installed. Proceeding with installation..."
-	"$ROOT_DIR/utils/scripts/install_ccat.sh"
+	".$ROOT_DIR/utils/scripts/install_ccat.sh"
 else 
 	info "Ccat is already installed"
 fi
 
 if ! command -v glow  &>/dev/null; then
         info "Glow is not installed. Proceeding with installation..."
-        "$ROOT_DIR/utils/scripts/install_glow.sh" &>/dev/null
+        ".$ROOT_DIR/utils/scripts/install_glow.sh" &>/dev/null
 else
         info "Glow is already installed"
 fi
@@ -42,7 +42,7 @@ fi
 
 if [ ! -d "$HOME/.z" ]; then
     	info "'z' is not installed. Proceeding with instalation..."
-	"$ROOT_DIR/utils/scripts/install_z.sh" &>/dev/null
+	".$ROOT_DIR/utils/scripts/install_z.sh" &>/dev/null
 else
     	info "'z' is already installed."
 fi
