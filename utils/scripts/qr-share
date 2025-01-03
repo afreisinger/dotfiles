@@ -1,0 +1,18 @@
+#!/bin/sh
+usage(){
+    echo "Usage: $0 <url>"
+    exit 1
+}
+
+if [[ $# == 0 ]]; then 
+    usage
+fi
+
+TMP="$TMPDIR/qr-share.txt"
+qrencode  "$1" -o "$TMP" -t ANSI -m 2  # Homebrew, Yum or APT
+
+cat "$TMP"
+
+# default output type is PNG, for that, use imgcat
+#imgcat "$TMP"
+

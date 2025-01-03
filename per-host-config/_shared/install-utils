@@ -1,0 +1,119 @@
+# source this package
+# set ft=bash
+
+_shared_package_info_message(){
+    h2 "Installing shared setup for:  $1"
+}
+
+asdf_has_plugin(){
+    asdf plugin list | grep $1 >/dev/null 2>&1
+}
+
+install_node_packages(){
+    _shared_package_info_message "Node"
+
+    h3 "Installing Node packages ...\n"
+    installed=$(mktemp)
+    npm list -g --depth 1 --json | jq -r -c '.dependencies | keys | .[]' > $installed
+    #filters out patterns that are present in the other file, see https://stackoverflow.com/questions/4780203/deleting-lines-from-one-file-which-are-in-another-file
+    node_apps=$(grep -v -f $installed ../_shared/node.local || true) 
+    # if non-zero, https://unix.stackexchange.com/a/146945/18594
+    if [[ -n "${node_apps// }" ]]; then
+        npm -g install $node_apps 
+    fi
+}
+
+install_python_packages(){
+    # https://github.com/pypa/pip/issues/5240
+    _shared_package_info_message "Python"
+
+    h3 "Upgrading pip\n"
+    #pip(){ python3 -m pip $@; } # to avoid warning about script wrapper and old python
+    #pip install --upgrade --user pip
+    pip3 install --upgrade pip
+
+    h3 "Installing Python packages ...\n"
+    pip install --user --upgrade -r ../_shared/python.local  | (grep -v 'Requirement already satisfied:' || :)
+}
+
+install_ruby_packages(){
+    _shared_package_info_message Ruby
+
+    # required for older Bundler / Jekyll setups
+    asdf install ruby 2.7.8
+
+    h3 "Installing Ruby packages ...\n"
+    while read line; do 
+        if gem list -i $line > /dev/null; then
+            continue
+        fi
+
+        gem install $line; 
+    done < ../_shared/ruby.local 
+}
+
+# todo: replace with `asdf` and rename to install_jvm_stuff
+install_sdkman_packages(){
+    _shared_package_info_message "SDKMAN"
+    init="$HOME/.sdkman/bin/sdkman-init.sh"
+
+    [[ -e "$init" ]] && source "$init"
+
+    if ! command_exists sdk; then
+        h2 "Installing SDKMAN"
+        curl -s "https://get.sdkman.io" | bash
+        source "$init"
+    fi
+
+    h3 "Installing SDKMAN packages ...\n"
+    sdk update
+
+    JAVA_VERSION=21.0.2
+    if ! sh -c "java --version  | grep 'openjdk $JAVA_VERSION' > /dev/null"; then
+        h3 "Installing Java"
+        sdk install java $JAVA_VERSION-open
+        sdk default java $JAVA_VERSION-open
+    fi
+
+    MAVEN_VERSION=3.6.3
+    if ! sh -c "mvn --version  | grep '$MAVEN_VERSION' > /dev/null"; then
+        h3 "Installing Maven"
+        sdk install maven $MAVEN_VERSION
+        sdk default maven $MAVEN_VERSION
+    fi
+
+    sdk install kotlin
+}
+
+add_plugin(){
+    if ! asdf_has_plugin $1; then
+        asdf plugin add $1
+    fi
+}
+
+install_asdf_tooling(){
+    _shared_package_info_message "ASDF"
+    init="$HOME/.asdf/asdf.sh"
+
+    # recommended download for all os's
+    if ! [[ -e "$HOME/.asdf" ]]; then
+        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.12.0
+    fi
+
+    [[ -e "$init" ]] && source "$init"
+
+    # To show all plugins available: `asdf plugin list all`
+
+    # for faster, cached lookups
+    add_plugin direnv
+    asdf direnv setup --shell bash --version latest
+    asdf install direnv 2.32.3
+
+    add_plugin python
+    add_plugin ruby
+    add_plugin nodejs
+
+    install_node_packages
+    install_ruby_packages
+    install_python_packages
+}

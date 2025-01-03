@@ -1,0 +1,40 @@
+# tj/git-extras needs Bash 4+
+bash
+bash-completion
+ccat
+cmake
+cowsay
+# distribute ssh commands. used at posten/bring
+csshx
+direnv
+erlang
+fortune
+fswatch
+fzf
+gh
+git-extras
+glow
+gnupg
+gum
+hashicorp/tap/terraform
+homebrew/cask/macvim
+htop
+jq
+kcat
+maven
+neovim
+node
+pam-reattach
+postgresql@15
+# python 3.5-3.9 needed for Google Cloud SDK. 3.11 is too new
+python@3.9
+pspg
+qrencode
+reattach-to-user-namespace
+shivammathur/php/php@7.4
+sox
+starship
+the_silver_searcher
+tmux
+vagrant
+xmlstarlet

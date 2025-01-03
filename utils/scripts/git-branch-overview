@@ -1,0 +1,3 @@
+#!/bin/sh
+# You can pass in `branch` arguments and it will be used. I.e. "-a" to see all remote branches
+git branch  --format='%(refname:lstrip=2)' $@ | xargs -L10 -IXX git log -n1 --pretty=format:'%ai %d %s <%an> (%cr) %n'  XX -- | sort -u
