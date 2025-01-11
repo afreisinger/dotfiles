@@ -1,0 +1,17 @@
+# This file has the list of "known" committers. It could also be added to a local repo
+# You typically need to add something like this
+## Commit signing for 1Password
+## @see https://developer.1password.com/docs/ssh/git-commit-signing/
+# [user]
+#   signingkey =  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7j1L+AAzeyim7vF2erPW98DSs4xO2kja+a9N594X4yYhPoe3GTxZccz4LQ5r72Os8vTV6w5awINAsWMvJR1mhkRzFP3sToYYN9VlwDNk+Os0hnq6PXN01jZZQlVqLQ8qaHuJx7sp919oVuRfewWwH8NQ+AG3keGoEWKGPSYwbzK+ifVVm+bMTteZHoubYsGqCjCnSjMD50ENH+dTuYkTocTvmdpDk+Ks/7AHhfMsBBcaFHs+lmCokrypRIQ0+tcekFf+Svz0awNxRG4lxLBCz68B5Xghq2t6lPooKDwdHs/i5J8zPwFfZNX2MGtzyW97YKDaV0BJlNgiU9jVM7yw2c49XOb39ef+6Hjg/bQNN+dycOL3n48m+TOVL1NqGkobTnsF1T2jIBvLEUK1tH5YgSfVUR9ARlOygQD69YOrZWhfSn09vOrl2+6oyP9qQv6M1YZzrn8vQwoWn1gUz+ncqg/yB/Q8dAEh8CTHQZMp8X/0KI3XBbJHELcu6urDSpOcAxJUPI07O7wEjB+numka5w/EFtUdV08P55Om0Wy9ZrY4JRqCJ6Rh0QsL8rDv7c7WyFM5Aw3FcsSQ6M2n8pO7paPnBSoN6FP1XLIGIRB/+SB7iL2sIKes7r5iSIEcaoYmj6j1h+H0KNmHxjOP9xvXlLBz32dPtxta7RqtBEZHzJw== afreisinger@github/114166013 # ssh-import-id gh:afreisinger
+# 
+# [gpg]
+#   format = ssh
+# 
+# [gpg "ssh"]
+#   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+#   allowedSignersFile = /Users/afreisinger/.ssh/allowed_signers
+
+afreisinger namespaces="git" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7j1L+AAzeyim7vF2erPW98DSs4xO2kja+a9N594X4yYhPoe3GTxZccz4LQ5r72Os8vTV6w5awINAsWMvJR1mhkRzFP3sToYYN9VlwDNk+Os0hnq6PXN01jZZQlVqLQ8qaHuJx7sp919oVuRfewWwH8NQ+AG3keGoEWKGPSYwbzK+ifVVm+bMTteZHoubYsGqCjCnSjMD50ENH+dTuYkTocTvmdpDk+Ks/7AHhfMsBBcaFHs+lmCokrypRIQ0+tcekFf+Svz0awNxRG4lxLBCz68B5Xghq2t6lPooKDwdHs/i5J8zPwFfZNX2MGtzyW97YKDaV0BJlNgiU9jVM7yw2c49XOb39ef+6Hjg/bQNN+dycOL3n48m+TOVL1NqGkobTnsF1T2jIBvLEUK1tH5YgSfVUR9ARlOygQD69YOrZWhfSn09vOrl2+6oyP9qQv6M1YZzrn8vQwoWn1gUz+ncqg/yB/Q8dAEh8CTHQZMp8X/0KI3XBbJHELcu6urDSpOcAxJUPI07O7wEjB+numka5w/EFtUdV08P55Om0Wy9ZrY4JRqCJ6Rh0QsL8rDv7c7WyFM5Aw3FcsSQ6M2n8pO7paPnBSoN6FP1XLIGIRB/+SB7iL2sIKes7r5iSIEcaoYmj6j1h+H0KNmHxjOP9xvXlLBz32dPtxta7RqtBEZHzJw== afreisinger@github/114166013 # ssh-import-id gh:afreisinger
+afreisinger namespaces="git" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2F+fexWNQv4P+dQ/PM+SVSG/MQwJn/GkcogGISeY737AepqFegvjYcl40qgLA4WKEvFZcKnE9zg//RYwjOTAzBA4QzBnofF+FmKthpLz8eS1a0hEHG6UVVXkJbggs4XFC+x0nVTMSa7M/qJ2K+c0gGiKuEUfD4rSM1GXKfAtEFMmvj5ngJEb03NXlKE/+Q41OmxuPU8Us/Woh1AwgYZ5uOvo3WmqV8tN1Ze0iY9ibVm2PHymVpG80b4bDrFr9AjapfADWjh1leEW7uRnmf09VjSB1YZV7hl3YzTaHTM8UTqx76WK5WnhEzCQhgcvs/BZZLldC73U0pjv5Ut7LK/Ah afreisinger@github/98082506 # ssh-import-id gh:afreisinger
+afreisinger namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICgp+X32cMdy2Ief1N02/R7SJSddlP6LTTe0eDvY1AAH afreisinger@github/98215748 # ssh-import-id gh:afreisinger

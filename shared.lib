@@ -1,0 +1,139 @@
+# vi: ft=bash
+
+# since this is sourced from ANYWHERE, we need to know the root to be able to 
+# source other files
+
+
+
+
+if [[ "$ROOT" == "" ]]; then
+    error "Missing ROOT environment variable (in ${BASH_SOURCE[0]}). Should point to git repo root"
+    return 1
+fi
+
+BASH_D="$ROOT/common-setup/bash.d"
+BIN_DIR="$ROOT/utils/scripts"
+source "$BASH_D/colors"
+source "$BASH_D/aliases_functions"
+shopt -s expand_aliases
+
+NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# header1
+h1() {
+    printf "%s\n" "$(green "$@")"
+}
+
+h2(){
+    printf "%s\n" "$(blue "$@")"
+}
+
+h3(){
+    printf "%s %s\n" "-->" "$(blue "$@")"
+}
+
+info(){
+    printf "%s\n" "$(pink "$@")"
+}
+
+warn(){
+    printf "%s\n" "$(dark_yellow "$@")" >> /dev/stderr
+}
+
+banner(){
+    printf "\n################################################################################\n"
+    printf "##    %s\n" "$(dark_red "$@")"
+    printf "################################################################################\n"
+}
+
+fail(){
+    banner "$@"
+    exit 1
+}
+
+error(){
+    if ! command -v dark_red; then
+        printf "ERROR: %s\n" "$@" >> /dev/stderr
+    else
+        printf "ERROR: %s\n" "$(dark_red "$@")" >> /dev/stderr
+    fi
+    exit 1
+}
+
+
+add_1password_identity_agent_ssh_config(){
+    if ! grep IdentityAgent.*1password/agent.sock ~/.ssh/config > /dev/null; then 
+        h2 "Configuring 1Password as SSH Agent"
+        cat >> ~/.ssh/config << EOF
+
+Host *
+  IdentityAgent ~/.1password/agent.sock
+
+EOF
+    fi
+}
+
+
+spinner() {
+sleep 5 & pid=$!
+ 
+i=1
+sp="\|/-"
+while ps -p $pid > /dev/null
+do
+    printf "\b%c" "${sp:i++%4:1}"
+    sleep 0.1
+done
+}
+
+
+download_file() {
+    local url=$1
+    local destination=$2
+    local log_file=$3
+
+    info "     Downloading from $url to $destination..."
+
+    # Intenta descargar el archivo
+    if ! curl -s "$url" -o "$destination" >> "$log_file" 2>&1; then
+        error "Failed to download from $url. Check $log_file for details."
+        exit 1
+    fi
+}
+
+create_symlinks() {
+    local source_dir=$1
+    local target_dir=$2
+
+    # Comprobar si los directorios existen
+    if [[ ! -d "$source_dir" || ! -d "$target_dir" ]]; then
+        error "Either source or target directory does not exist."
+        exit 1
+    fi
+
+    # Crear los enlaces simbólicos en bloque
+    for file in "$source_dir"/*; do
+        if [[ -f "$file" ]]; then
+            local base_name=$(basename "$file")
+            local target_file="$target_dir/$base_name"
+
+            # Si el enlace simbólico no existe, crearlo
+            if [[ ! -e "$target_file" ]]; then
+                ln -sf "$file" "$target_file"
+                info "    Symbolic link created: $target_file -> $file"
+            else
+                info "    Symbolic link already exists: $target_file"
+            fi
+        fi
+    done
+}
+
+safe_pushd() {
+    pushd "$1" > /dev/null || { echo "Failed to change directory to $1"; exit 1; }
+}
+
+safe_popd() {
+    popd > /dev/null || { echo "Failed to pop directory"; exit 1; }
+}

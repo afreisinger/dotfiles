@@ -1,0 +1,17 @@
+# vi: ft=bash
+
+export LC_ADDRESS=es_ES.utf8
+export LC_NAME=es_ES.utf8
+export LC_MONETARY=es_ES.utf8
+export LC_PAPER=es_ES.utf8
+export LANG=es_ES.utf8
+export LC_IDENTIFICATION=es_ES.utf8
+export LC_TELEPHONE=es_ES.utf8
+export LC_MEASUREMENT=es_ES.utf8
+export LC_TIME=es_ES.utf8
+export LC_NUMERIC=es_ES.utf8
+export PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
+
+if [[ -e .wsl-profile.local ]]; then
+    . ~/.wsl-profile.local
+fi

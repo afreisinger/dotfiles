@@ -1,0 +1,14 @@
+build-essential
+libbz2-dev
+libncurses5-dev
+libncursesw5-dev
+libssl-dev
+libreadline-dev
+libffi-dev
+libsqlite3-dev
+liblzma-dev
+zlib1g-dev
+uuid-dev
+tk-dev
+python3-pip
+thefuck

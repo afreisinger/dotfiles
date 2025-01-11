@@ -1,0 +1,17 @@
+#! /bin/sh
+tmpdir=/tmp/$(basename $0)
+mkdir $tmpdir 2>/dev/null
+rm  $tmpdir/* 2>/dev/null
+
+allrevs=$(git rev-list --all)
+# well, nearly all revs, we chould still check the log if we have
+# dangling commits and we could include the index to be perfect...
+
+for rev in $allrevs
+do
+  FILE=$tmpdir/$rev 
+  git ls-tree --full-tree -r $rev > $FILE
+  grep $1 $FILE > /dev/null && echo $rev $FILE
+done
+
+rm -r $tmpdir

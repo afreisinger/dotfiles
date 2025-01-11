@@ -1,0 +1,10 @@
+[difftool "wsdiff"]
+	cmd = wstorm diff  \"$LOCAL\" \"$REMOTE\"
+#[difftool "sourcetree"]
+    #cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+[safe]
+	directory = /home/carlerik/code/ptflow-api/scripts/..
+	directory = /home/carlerik/code/ptflow-api
+[include]
+    path = .gitlocal-wsl
+    path = .gitlocal-non-wsl

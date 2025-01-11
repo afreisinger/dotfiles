@@ -1,0 +1,12 @@
+[submodule "common-setup/matcher"]
+	path = common-setup/matcher
+	url = https://github.com/burke/matcher
+[submodule "utils/signal-reset"]
+	path = utils/signal-reset
+	url = https://github.com/thomaslee/signal-reset
+[submodule "utils/inotify-info"]
+	path = utils/inotify-info
+	url = https://github.com/mikesart/inotify-info
+[submodule "utils/fetch-todays-calendar"]
+	path = utils/fetch-todays-calendar
+	url = https://github.com/afreisinger/fetch-todays-calendar

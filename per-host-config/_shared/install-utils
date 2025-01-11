@@ -1,0 +1,237 @@
+# source this package
+# set ft=bash
+
+
+
+# install_node_packages(){
+#     _shared_package_info_message "Node"
+
+#     h3 "Installing Node packages ...\n"
+#     installed=$(mktemp)
+#     npm list -g --depth 1 --json | jq -r -c '.dependencies | keys | .[]' > $installed
+#     #filters out patterns that are present in the other file, see https://stackoverflow.com/questions/4780203/deleting-lines-from-one-file-which-are-in-another-file
+#     node_apps=$(grep -v -f $installed ../_shared/node.local || true) 
+#     # if non-zero, https://unix.stackexchange.com/a/146945/18594
+#     if [[ -n "${node_apps// }" ]]; then
+#         npm -g install $node_apps 
+#     fi
+# }
+
+install_python_packages(){
+    # https://github.com/pypa/pip/issues/5240
+    _shared_package_info_message "Python"
+
+    h3 "Upgrading pip\n"
+    #pip(){ python3 -m pip $@; } # to avoid warning about script wrapper and old python
+    #pip install --upgrade --user pip
+    pip3 install --upgrade pip
+
+    h3 "Installing Python packages ...\n"
+    pip install --user --upgrade -r ../_shared/python.local --no-warn-script-location | (grep -v 'Requirement already satisfied:' || :)
+}
+
+# install_ruby_packages(){
+#     _shared_package_info_message Ruby
+
+#     # required for older Bundler / Jekyll setups
+#     asdf install ruby 2.7.8
+
+#     h3 "Installing Ruby packages ...\n"
+#     while read line; do 
+#         if gem list -i $line > /dev/null; then
+#             continue
+#         fi
+
+#         gem install $line; 
+#     done < ../_shared/ruby.local 
+# }
+
+# todo: replace with `asdf` and rename to install_jvm_stuff
+# install_sdkman_packages(){
+#     _shared_package_info_message "SDKMAN"
+#     init="$HOME/.sdkman/bin/sdkman-init.sh"
+
+#     [[ -e "$init" ]] && source "$init"
+
+#     if ! command_exists sdk; then
+#         h2 "Installing SDKMAN"
+#         curl -s "https://get.sdkman.io" | bash
+#         source "$init"
+#     fi
+
+#     h3 "Installing SDKMAN packages ...\n"
+#     sdk update
+
+#     JAVA_VERSION=21.0.2
+#     if ! sh -c "java --version  | grep 'openjdk $JAVA_VERSION' > /dev/null"; then
+#         h3 "Installing Java"
+#         sdk install java $JAVA_VERSION-open
+#         sdk default java $JAVA_VERSION-open
+#     fi
+
+#     MAVEN_VERSION=3.6.3
+#     if ! sh -c "mvn --version  | grep '$MAVEN_VERSION' > /dev/null"; then
+#         h3 "Installing Maven"
+#         sdk install maven $MAVEN_VERSION
+#         sdk default maven $MAVEN_VERSION
+#     fi
+
+#     sdk install kotlin
+# }
+
+_shared_package_info_message(){
+    h2 "Installing shared setup for: $1"
+}
+
+asdf_has_plugin(){
+    asdf plugin list | grep "$1" >/dev/null 2>&1
+}
+
+add_plugin() {
+    if ! asdf_has_plugin "$1"; then
+        echo "Adding plugin: $1"
+        asdf plugin add "$1"
+    else
+        echo "Plugin '$1' is already installed."
+    fi
+}
+
+install_all_tools() {
+    local tool_versions_file="$1"
+
+    if [[ ! -f "$tool_versions_file" ]]; then
+        echo "Error: File '$tool_versions_file' not found."
+        return 1
+    fi
+
+    # Agrega plugins necesarios y luego instala las versiones
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        # Obtener la herramienta (primer columna)
+        local tool_name
+        tool_name=$(echo "$line" | awk '{print $1}')
+
+        if [[ -n "$tool_name" ]]; then
+            add_plugin "$tool_name"
+        fi
+    done < "$tool_versions_file"
+
+    echo "Installing all tools according to $tool_versions_file..."
+    asdf install
+}
+
+install_asdf_tooling(){
+    ASDF_DIR="$HOME/.asdf"
+    ASDF_INIT="$ASDF_DIR/asdf.sh"
+    
+    _shared_package_info_message "ASDF"
+
+    if ! command -v jq &> /dev/null; then
+        fail "'jq' is not installed. Please install it to proceed."
+    fi
+
+    ASDF_LATEST_VERSION=$(curl -s https://api.github.com/repos/asdf-vm/asdf/releases/latest | jq -r '.tag_name')
+    if [[ -z "$ASDF_LATEST_VERSION" ]]; then
+        fail "Unable to fetch the latest version of ASDF."
+    fi
+
+     if [[ ! -d "$ASDF_DIR" ]]; then
+        info "ASDF is not installed. Installing ASDF..."
+        git clone https://github.com/asdf-vm/asdf.git "$ASDF_DIR" --branch "$ASDF_LATEST_VERSION" || fail "Failed to clone ASDF repository."
+    fi
+    
+
+    # Source ASDF if initialization script exists
+    if [[ -f "$ASDF_INIT" ]]; then
+        info "Initializing ASDF..."
+        source "$ASDF_INIT"
+    else
+        fail "ASDF initialization script not found at $ASDF_INIT." >&2
+        return 1
+    fi
+
+    ASDF_CURRENT_VERSION=$(asdf --version)
+    ASDF_CURRENT_VERSION="${ASDF_CURRENT_VERSION%%-*}"
+
+    info "    ASDF version currently installed: $ASDF_CURRENT_VERSION"
+
+     if [[ "$ASDF_CURRENT_VERSION" != "$ASDF_LATEST_VERSION" ]]; then
+        info "Updating ASDF to the latest version ($ASDF_LATEST_VERSION)..."
+        git -C "$ASDF_DIR" fetch --all
+        git -C "$ASDF_DIR" checkout "$ASDF_LATEST_VERSION" || fail "Failed to update ASDF to version $ASDF_LATEST_VERSION."
+    else
+        info "ASDF is already up to date (version $ASDF_CURRENT_VERSION)."
+    fi
+  # To show all plugins available: `asdf plugin list all`
+
+    # # for faster, cached lookups
+    
+    # add_plugin direnv
+    # asdf install direnv latest
+    # asdf direnv setup --shell bash
+
+    # asdf direnv setup --shell bash 
+    # --version latest
+    # asdf install direnv 2.32.3
+
+    # #add_plugin python
+    # #add_plugin ruby
+    # add_plugin nodejs
+
+    # install_node_packages
+    # #install_ruby_packages
+    # #install_python_packages
+}
+
+install_dependencies() {
+    local dependencies_file="$1"
+
+    # Verificar si el archivo fue proporcionado y existe
+    if [[ -z "$dependencies_file" ]]; then
+        echo "Error: No file path provided."
+        exit 1
+    elif [[ ! -f "$dependencies_file" ]]; then
+        echo "Error: File '$dependencies_file' not found!"
+        exit 1
+    fi
+
+    h2 "Installing system dependencies from $dependencies_file..."
+
+    # Leer las dependencias del archivo (ignorar líneas vacías y comentarios)
+    mapfile -t dependencies < <(grep -v '^#' "$dependencies_file" | grep -v '^$')
+
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        if command -v apt &>/dev/null; then
+            info "Detected APT package manager..."
+            sudo apt update
+            for package in "${dependencies[@]}"; do
+                info "Installing $package..."
+                sudo apt install -y less "$package"
+            done
+        elif command -v yum &>/dev/null; then
+            info "Detected YUM package manager..."
+            sudo yum groupinstall "Development Tools" -y
+            for package in "${dependencies[@]}"; do
+                info "Installing $package..."
+                sudo yum install -y "$package"
+            done
+        else
+            info "Unsupported Linux distribution. Install dependencies manually."
+            exit 1
+        fi
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        info "Detected macOS with Homebrew..."
+        if ! command -v brew &>/dev/null; then
+            echo "Homebrew is not installed. Please install it first."
+            exit 1
+        fi
+        for package in "${dependencies[@]}"; do
+            echo "Installing $package..."
+            brew install "$package"
+        done
+    else
+        info "Unsupported OS. Please install dependencies manually."
+        exit 1
+    fi
+
+    h2 "Dependencies installed successfully !"
+}

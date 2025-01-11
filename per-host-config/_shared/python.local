@@ -1,0 +1,6 @@
+poetry
+bitwarden-keyring
+keyring
+setuptools
+neovim
+pgcli

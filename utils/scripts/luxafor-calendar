@@ -1,0 +1,249 @@
+#!/usr/bin/env node
+// vi: ft=javascript
+/*
+ * Read Google Calendar event data from a file and notify the Luxafor webhook
+ * Intended use is as a dual cron job:
+ * - Run a cron job every half hour or so to fetch calendar events: fetch-todays-calendar --json-save
+ * - Run a cron job every minute with this util: luxafor-calendar --silent
+ *
+ * Alternatively, set them up as launchd (macOS) or systemd (Linux) services
+ * @see https://opensource.com/article/20/7/systemd-timers
+ * @see man 1 launchctl
+ */
+
+const { mkdirp } = require("mkdirp");
+const { fetch } = require("undici");
+const path = require("node:path");
+const os = require("node:os");
+const util = require("node:util");
+const exec = util.promisify(require("node:child_process").exec);
+const fs = require("node:fs/promises");
+const untildify = require("untildify");
+const APP_DATA_DIR = path.join(
+  os.homedir(),
+  ".local/share/@fatso83/luxafor-calendar"
+);
+const idFile = `${APP_DATA_DIR}/current-event-id.dat`;
+const luxaforId = process.env["LUXAFOR_ID"];
+
+async function readJsonFile(eventsFileName) {
+  const eventsFile = await fs.readFile(eventsFileName);
+  try {
+    const events = JSON.parse(eventsFile);
+    return events;
+  } catch (err) {
+    // SyntaxError: Unexpected end of JSON input
+    if (err instanceof SyntaxError) {
+      console.error("Failed parsing JSON: ", err.message);
+      console.error(eventsFile.toString());
+      process.exit(1);
+    }
+    throw err;
+  }
+}
+
+async function main() {
+  await requirements();
+
+  const cmd = "fetch-todays-calendar --data-location";
+  const result = await exec(cmd, {
+    env: {
+      ...process.env,
+      PATH: untildify(process.env.PATH),
+    },
+  });
+  const eventsFileName = result.stdout.trim();
+  try {
+    await fs.stat(eventsFileName);
+  } catch (err) {
+    userLog(`No events file found (${eventsFileName}). Not proceeding.`);
+    process.exit(0);
+  }
+  const events = await readJsonFile(eventsFileName);
+
+  const now = new Date();
+
+  const onGoingEvent = findEventIAmMostLikelyAttending(events, now);
+  const eventFinishedInLast3Minutes = findEventFinishedInLast3Minutes(
+    events,
+    now
+  );
+  const eventHasStarted = !!onGoingEvent;
+  const idFileExists = await fileExists(idFile);
+  const idOfLastStartedEvent =
+    idFileExists && (await getIdOfLastStartedEvent());
+
+  const url = "https://api.luxafor.com/webhook/v1/actions/solid_color";
+  if (eventHasStarted) {
+    const alreadyHandled = idOfLastStartedEvent === onGoingEvent.id;
+    if (alreadyHandled) {
+      userLog("Not doing anything. Already handled current ongoing event");
+    } else {
+      userLog("An event has started. Calling API ...");
+      await Promise.all([
+        fs.writeFile(idFile, onGoingEvent.id),
+        fetch(url, {
+          body: JSON.stringify({
+            userId: luxaforId,
+            actionFields: {
+              color: isTentativeAttenderOfEvent(onGoingEvent)
+                ? "yellow"
+                : "red",
+            },
+          }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }),
+      ]);
+    }
+  } else if (eventFinishedInLast3Minutes) {
+    if (idFileExists) {
+      getIdOfLastStartedEvent()
+        .then((lastStartedEventId) => {
+          userLog(
+            `Last event id touched by this util: '${lastStartedEventId}'.`
+          );
+          if (lastStartedEventId === eventFinishedInLast3Minutes.id) {
+            userLog("Will proceed to turn off the Luxafor");
+            return fetch(url, {
+              body: JSON.stringify({
+                userId: luxaforId,
+                actionFields: {
+                  color: "custom",
+                  custom_color: "000000",
+                },
+              }),
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          }
+        })
+        .then(deleteIdFile);
+    } else {
+      userLog(
+        "This util has not flipped the Luxafor light for any current events, so not doing anything."
+      );
+    }
+  } else {
+    userLog(
+      `No event in progress and no known event stopped in the last few minutes`
+    );
+    await deleteIdFile();
+  }
+}
+
+async function requirements() {
+  try {
+    await fs.stat(APP_DATA_DIR);
+  } catch (err) {
+    userLog(
+      `No app data dir found. Creating directory ${APP_DATA_DIR} to store app data.`
+    );
+    mkdirp(APP_DATA_DIR);
+  }
+
+  if (!luxaforId) {
+    console.error("You need to set the environment variable LUXAFOR_ID");
+    process.exit(1);
+  }
+}
+
+function userLog(...args) {
+  const silent = process.argv[2] === "--silent";
+  if (silent) return;
+  console.log(...args);
+}
+
+async function getIdOfLastStartedEvent() {
+  return fs.readFile(idFile).then((buf) => buf.toString().trim());
+}
+
+function fileExists(path) {
+  return fs.stat(path).then(
+    () => true,
+    () => false
+  );
+}
+
+async function deleteIdFile() {
+  if (await fileExists(idFile)) {
+    userLog("Deleting current event id file");
+    await fs.rm(idFile);
+  }
+}
+function findEventFinishedInLast3Minutes(events, now) {
+  return events.find(
+    (event) =>
+      new Date(event.end.dateTime) < now &&
+      new Date(event.end.dateTime) > new Date(now.getTime() - 3 * 60 * 1000)
+  );
+}
+
+function findEventIAmMostLikelyAttending(events, now) {
+  const currentEvents = events
+    .filter((e) => !isOrganizerOfEventButNotAttending(e))
+    .filter(isOnGoingEvent(now))
+    .filter(isPartOfMeeting);
+  if (currentEvents.length === 0) return undefined;
+  if (currentEvents.length === 1) return currentEvents[0];
+
+  const attending = currentEvents.find(
+    (e) => isOrganizerOfEvent(e) || isAcceptedAttenderOfEvent(e)
+  );
+  if (attending) return attending;
+
+  // must be tentative
+  return currentEvents[0];
+}
+
+const isOnGoingEvent = (now) => (event) =>
+  new Date(event.start.dateTime) < now && new Date(event.end.dateTime) > now;
+
+function isPartOfAttenders(event, predicate) {
+  return !!event.attendees?.find(
+    (attender) => attender.self && predicate(attender)
+  );
+}
+
+function isAcceptedAttenderOfEvent(event) {
+  return isPartOfAttenders(event, (a) => a.responseStatus === "accepted");
+}
+
+function isTentativeAttenderOfEvent(event) {
+  return isPartOfAttenders(event, (a) => a.responseStatus === "tentative");
+}
+
+function isOrganizerOfEvent(event) {
+  return !!event.organizer.self;
+}
+
+function isOrganizerOfEventButNotAttending(event) {
+  return (
+    isOrganizerOfEvent(event) &&
+    isPartOfAttenders(event, (a) => a.responseStatus === "declined")
+  );
+}
+
+function isPartOfMeeting(event) {
+  return (
+    isTentativeAttenderOfEvent(event) ||
+    isAcceptedAttenderOfEvent(event) ||
+    isOrganizerOfEvent(event)
+  );
+}
+
+// Only run main if run as a script
+if (require.main === module) {
+  main();
+}
+
+module.exports = {
+  fileExists,
+  isPartOfMeeting,
+  isAttenderOfEvent: isAcceptedAttenderOfEvent,
+  isTentativeAttenderOfEvent,
+};
