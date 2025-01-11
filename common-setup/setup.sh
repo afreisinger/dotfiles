@@ -174,7 +174,7 @@ done
 
 
 ln -s "$SCRIPT_DIR/bash_completion.d" "$HOME/.bash_completion.d"
-info "Symbolic link created: \"$HOME/.bash_completion.d\" -> \"$SCRIPT_DIR/bash_completion.d\""
+info "Symbolic link created: $HOME/.bash_completion.d -> $SCRIPT_DIR/bash_completion.d"
 
 h2 "Configuring 'git'"
 gitconfig
