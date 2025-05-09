@@ -40,27 +40,27 @@ safe_pushd "$SCRIPT_DIR"
 h1 "Installing common setup"
 
 # Initialize Git submodules if present
-if [[ -f .gitmodules ]]; then
-    info "Initializing Git submodules..."
-    git submodule init
-    git submodule update
-else
-    info "No submodules found. Skipping initialization."
-fi
+#if [[ -f .gitmodules ]]; then
+#    info "Initializing Git submodules..."
+#    git submodule init
+#    git submodule update
+#else
+#    info "No submodules found. Skipping initialization."
+#fi
 
 [[ -x common-setup/setup.sh ]] || fail "common-setup/setup.sh not found or not executable"
 common-setup/setup.sh || fail "Failed common setup"
 
-h1 "Install config specific to this machine"
-echo 'ubuntu' > ~/.dotfiles-machine
-chmod 600 ~/.dotfiles-machine
-[[ -x per-host-config/setup.sh ]] || fail "per-host-config/setup.sh not found or not executable"
-per-host-config/setup.sh || fail "Failed machine-specific setup"
+#h1 "Install config specific to this machine"
+#echo 'ubuntu' > ~/.dotfiles-machine
+#chmod 600 ~/.dotfiles-machine
+#[[ -x per-host-config/setup.sh ]] || fail "per-host-config/setup.sh not found or not executable"
+#per-host-config/setup.sh || fail "Failed machine-specific setup"
 
 # Add the little `millis` util for cross-platform millisecond support
-h1 "Adding scripts and binary utilities"
-[[ -x utils/setup.sh ]] || fail "utils/setup.sh not found or not executable"
-utils/setup.sh || fail "Failed utils setup"
+#h1 "Adding scripts and binary utilities"
+#[[ -x utils/setup.sh ]] || fail "utils/setup.sh not found or not executable"
+#utils/setup.sh || fail "Failed utils setup"
 
 # Restore current directory of user
 safe_popd

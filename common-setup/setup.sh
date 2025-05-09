@@ -22,6 +22,7 @@ pushd "$SCRIPT_DIR" > /dev/null
 [[ ! -e "$HOME"/.bash.d ]] && mkdir "$HOME/.bash.d"
 [[ ! -e "$HOME"/.config ]] && mkdir "$HOME/.config"
 [[ ! -e "$HOME"/bin ]] && mkdir "$HOME/bin"
+[[ ! -e "$HOME"/dev ]] && mkdir "$HOME/dev"
 
 # Redirect all output (stdout and stderr) to a log file
 exec > >(tee -i "$SET_FILE") 2>&1
@@ -39,13 +40,13 @@ if [ -e "$HOME/.bash_profile" ]; then
 fi
 
 
-h2 "Clearing 'logs'"
-if [ -d "$HOME/.logs" ]; then
-    rm -rf "$HOME/.logs/*" 2>/dev/null
-    info "Cleared all files in the directory $LOG_DIR"
-else
-    info "No 'logs' directory found"
-fi
+#h2 "Clearing 'logs'"
+#if [ -d "$HOME/.logs" ]; then
+#    rm -rf "$HOME/.logs/*" 2>/dev/null
+#    info "Cleared all files in the directory $LOG_DIR"
+#else
+#    info "No 'logs' directory found"
+#fi
 
 
 h2 "Installing some utilities"
@@ -71,7 +72,11 @@ install_tool() {
 install_tool "ccat" "..$ROOT_DIR/utils/scripts/install_ccat.sh" "$LOG_FILE"
 install_tool "glow" "..$ROOT_DIR/utils/scripts/install_glow.sh" "$LOG_FILE"
 install_tool "jq" "..$ROOT_DIR/utils/scripts/install_jq.sh" "$LOG_FILE"
-install_tool "node" "..$ROOT_DIR/utils/scripts/install_node.sh" "$LOG_FILE"
+install_tool "ansible" "..$ROOT_DIR/utils/scripts/install_ansible.sh" "$LOG_FILE"
+install_tool "timeshift" "..$ROOT_DIR/utils/scripts/install_timeshift.sh" "$LOG_FILE"
+install_tool "grub-btrfsd" "..$ROOT_DIR/utils/scripts/install_grub_btrfs.sh" "$LOG_FILE"
+
+#install_tool "node" "..$ROOT_DIR/utils/scripts/install_node.sh" "$LOG_FILE"
 
 if [ ! -f "$HOME/bin/z.sh" ]; then
     info "'z' is not installed. Proceeding with installation..."
@@ -92,13 +97,13 @@ else
     info "Git completion script already exists."
 fi
 
-if [ ! -f "$BASH_D/npm" ]; then
-    info "Updating 'bash' completion scripts for NPM ..."
-    download_file "https://raw.githubusercontent.com/npm/cli/master/lib/utils/completion.sh" "$BASH_D/npm" "$LOG_FILE"
-    source "$BASH_D/npm"
-else
-    info "NPM completion script already exists."
-fi
+#if [ ! -f "$BASH_D/npm" ]; then
+#    info "Updating 'bash' completion scripts for NPM ..."
+#    download_file "https://raw.githubusercontent.com/npm/cli/master/lib/utils/completion.sh" "$BASH_D/npm" "$LOG_FILE"
+#    source "$BASH_D/npm"
+#else
+#    info "NPM completion script already exists."
+#fi
 
 gitconfig(){
 
@@ -138,68 +143,65 @@ gitconfig(){
         GIT_NAME=$git_name GIT_EMAIL=$git_email envsubst < ./git-personal.template > "$personal_details_file"
        
     fi
-
-    info "Git user.name: $(git config user.name)"
-    info "Git user.email: $(git config user.email)"
        
 }
 
-h2 "Linking files"
-files=(
-    "gitconfig"
-    "profile"
-    "bashrc"
-    "gitignore_global"
-    "tmux.conf"
-    "tool-versions"
-    "zshrc"
-    "dependencies"
-    "pystartup"
-)
+#h2 "Linking files"
+#files=(
+#    "gitconfig"
+#    "profile"
+#    "bashrc"
+#    "gitignore_global"
+#    "tmux.conf"
+#    "tool-versions"
+#    "zshrc"
+#    "dependencies"
+#    "pystartup"
+#)
 
-for file in "${files[@]}"; do
-    ln -sf "$SCRIPT_DIR/$file" "$HOME/.$file"
-    info "Symbolic link created: $HOME/$(basename ."$file") -> $SCRIPT_DIR/$file"
-done
+#for file in "${files[@]}"; do
+#    ln -sf "$SCRIPT_DIR/$file" "$HOME/.$file"
+#    info "Symbolic link created: $HOME/$(basename ."$file") -> $SCRIPT_DIR/$file"
+#done
 
-for file in "$SCRIPT_DIR"/bash.d/*; do
-  ln -sf "$file" "${BASH_DIR}"/
-  info "Symbolic link created: $BASH_DIR/$(basename ."$file") -> $file"
-done
+#for file in "$SCRIPT_DIR"/bash.d/*; do
+#  ln -sf "$file" "${BASH_DIR}"/
+#  info "Symbolic link created: $BASH_DIR/$(basename ."$file") -> $file"
+#done
 
-for file in "$ROOT"/utils/scripts/*; do
-  ln -sf "$file" "${HOME}"/bin
-  info "Symbolic link created: $HOME/bin/$(basename ."$file") -> $file"
-done
+#for file in "$ROOT"/utils/scripts/*; do
+#  ln -sf "$file" "${HOME}"/bin
+#  info "Symbolic link created: $HOME/bin/$(basename ."$file") -> $file"
+#done
 
 
-ln -s "$SCRIPT_DIR/bash_completion.d" "$HOME/.bash_completion.d"
-info "Symbolic link created: $HOME/.bash_completion.d -> $SCRIPT_DIR/bash_completion.d"
+#ln -s "$SCRIPT_DIR/bash_completion.d" "$HOME/.bash_completion.d"
+#info "Symbolic link created: $HOME/.bash_completion.d -> $SCRIPT_DIR/bash_completion.d"
 
 h2 "Configuring 'git'"
 gitconfig
 
-h2 "Configuring 'tmux'"
-[[ ! -e "$HOME/.tmux" ]] && mkdir "$HOME/.tmux";
-[[ ! -e "$HOME/.tmux/plugins" ]] && mkdir "$HOME/.tmux/plugins";
-[[ ! -e "$HOME/.tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm "$HOME"/.tmux/plugins/tpm &>/dev/null
+#h2 "Configuring 'tmux'"
+#[[ ! -e "$HOME/.tmux" ]] && mkdir "$HOME/.tmux";
+#[[ ! -e "$HOME/.tmux/plugins" ]] && mkdir "$HOME/.tmux/plugins";
+#[[ ! -e "$HOME/.tmux/plugins/tpm" ]] && git clone https://github.com/tmux-plugins/tpm "$HOME"/.tmux/plugins/tpm &>/dev/null
 
-for file in "$SCRIPT_DIR"/tmux/*; do
-  ln -sf "$file" "${HOME}/.tmux/"
-  info "Symbolic link created: $HOME/.tmux/$(basename ."$file") -> $file"
-done
+#for file in "$SCRIPT_DIR"/tmux/*; do
+#  ln -sf "$file" "${HOME}/.tmux/"
+#  info "Symbolic link created: $HOME/.tmux/$(basename ."$file") -> $file"
+#done
 
-h2 "Configuring 'allowed_signers'"
-[[ ! -e ~/.ssh ]] && mkdir -m 700 ~/.ssh
-rm -f ~/.ssh/allowed_signers 2>/dev/null
-if [[ -e ./allowed_signers ]]; then
+#h2 "Configuring 'allowed_signers'"
+#[[ ! -e ~/.ssh ]] && mkdir -m 700 ~/.ssh
+#rm -f ~/.ssh/allowed_signers 2>/dev/null
+#if [[ -e ./allowed_signers ]]; then
     
-    ln -sf "$SCRIPT_DIR"/allowed_signers "$HOME"/.ssh/allowed_signers
-    info "Symbolic link created: $HOME/.ssh/allowed_signers -> $SCRIPT_DIR/allowed_signers"
-else
-    info "Error: The 'allowed_signers' file is not present in the current directory."
-    exit 1
-fi
+#    ln -sf "$SCRIPT_DIR"/allowed_signers "$HOME"/.ssh/allowed_signers
+#    info "Symbolic link created: $HOME/.ssh/allowed_signers -> $SCRIPT_DIR/allowed_signers"
+#else
+#    info "Error: The 'allowed_signers' file is not present in the current directory."
+#    exit 1
+#fi
 
 h1 "Finished common setup"
 popd > /dev/null
