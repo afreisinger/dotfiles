@@ -1,0 +1,31 @@
+[user]
+    name = Adrian Freisinger
+    email = afreisinger@gmail.com
+
+[init]
+    defaultBranch = main
+
+[core]
+    editor = vim
+    excludesfile = ~/.gitignore_global
+
+[color]
+    ui = auto
+
+[pull]
+    rebase = false
+
+[merge]
+    conflictstyle = diff3
+
+[push]
+    autoSetupRemote = true
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    lg = log --oneline --graph --decorate --all
+    last = log -1 HEAD
+    unstage = reset HEAD --
