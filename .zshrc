@@ -1,3 +1,10 @@
+# p10k instant prompt. Versionado a proposito: si falta, powerlevel10k lo
+# re-inserta solo al arrancar y ensucia este repo (porque .zshrc es un
+# symlink al repo). Debe quedar arriba de todo.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
