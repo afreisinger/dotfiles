@@ -1,0 +1,55 @@
+name: dev
+root: ~/dev
+
+windows:
+  - local:
+      layout: main-vertical
+      panes:
+        - cd ~
+        -
+        -
+
+  - code:
+      layout: main-vertical
+      panes:
+        - nvim
+        -
+
+  # - app:
+  #     layout: main-vertical
+  #     panes:
+  #       - cd ~/dev/adrianfreisinger.com && npm run develop
+  #       #- tail -f ~/dev/adrianfreisinger.com/logs/*.log
+  #       - cd ~/dev/adrianfreisinger.com && nvim
+
+  # - openclaw:
+  #     layout: even-horizontal
+  #     panes:
+  #       - ssh -t openclaw "/home/ubuntu/.npm-global/bin/openclaw tui"
+  #       - ssh ubuntu@10.204.147.3
+
+  # - containers:
+  #     layout: even-horizontal
+  #     panes:
+  #       - lazydocker
+
+  - monitor:
+      layout: tiled
+      panes:
+        - btop
+        # - journalctl -f
+
+  # - network:
+  #     layout: tiled
+  #     panes:
+  #       - bandwhich
+
+  # - vpn:
+  #     layout: tiled
+  #     panes:
+  #       - tail -f bot-vpn/logs/vpn_bot.log
+  #       - watch -n1 'ip link show tun0 2>/dev/null && echo "---" && resolvectl status tun0 2>/dev/null || echo "tun0 no existe"'
+  #       - watch -n2 'ip route | grep tun0 || echo "sin rutas VPN"'
+  #       - watch -n2 'pgrep -a openconnect || echo "openconnect no está corriendo"'
+  #       - ping 10.30.251.70
+  #       - watch -n2 'systemctl status resolvectl-vpn.service 2>/dev/null || echo "service deprecated (udev rule active)"'
